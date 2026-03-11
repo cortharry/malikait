@@ -1,0 +1,460 @@
+<section class="section career" id="career">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Build Your <span class="highlight">Career</span> with MITS</h2>
+            <p class="section-subtitle">Join our team of innovators and shape the future of technology with us.</p>
+        </div>
+        
+        <!-- Job Listings (Default View) -->
+        <div class="job-listings-view" id="jobListingsView">
+            <div class="job-openings">
+                <h3>Current Job Openings</h3>
+               
+                <div class="job-list">
+                    <div class="job-card">
+                        <div class="job-info">
+                            <div class="job-header">
+                                <h3>DevOps Engineer</h3>
+                                <div class="job-meta">
+                                    <span class="job-location"><i class="fas fa-map-marker-alt"></i> Head Office, Butwal, Rupandehi</span>
+                                    <span class="job-type"><i class="fas fa-briefcase"></i> Full Time</span>
+                                    <span class="job-department"><i class="fas fa-code-branch"></i> DevOps</span>
+                                </div>
+                            </div>
+                            <p class="job-summary">The DevOps Engineer is responsible for designing automated CI/CD systems, managing Kubernetes-based deployments, implementing observability stacks, enforcing security compliance, and ensuring reliable and scalable DevOps infrastructure.</p>
+                            <div class="job-tags">
+                                <span class="job-tag">Kubernetes</span>
+                                <span class="job-tag">CI/CD</span>
+                                <span class="job-tag">AWS/Azure</span>
+                                <span class="job-tag">Docker</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary apply-now-btn" data-job-id="devops-engineer" data-job-title="DevOps Engineer">Apply Now</button>
+                    </div>
+                    
+                    <div class="job-card">
+                        <div class="job-info">
+                            <div class="job-header">
+                                <h3>Senior Full-Stack Developer</h3>
+                                <div class="job-meta">
+                                    <span class="job-location"><i class="fas fa-map-marker-alt"></i> Head Office, Butwal, Rupandehi</span>
+                                    <span class="job-type"><i class="fas fa-briefcase"></i> Full Time</span>
+                                    <span class="job-department"><i class="fas fa-code-branch"></i> Development</span>
+                                </div>
+                            </div>
+                            <p class="job-summary">Lead development of web applications using React, Node.js, and cloud platforms. Mentor junior developers and architect scalable solutions for enterprise clients.</p>
+                            <div class="job-tags">
+                                <span class="job-tag">React</span>
+                                <span class="job-tag">Node.js</span>
+                                <span class="job-tag">MongoDB</span>
+                                <span class="job-tag">AWS</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary apply-now-btn" data-job-id="senior-fullstack" data-job-title="Senior Full-Stack Developer">Apply Now</button>
+                    </div>
+                    
+                    <div class="job-card">
+                        <div class="job-info">
+                            <div class="job-header">
+                                <h3>Cybersecurity Analyst</h3>
+                                <div class="job-meta">
+                                    <span class="job-location"><i class="fas fa-map-marker-alt"></i> Head Office, Butwal, Rupandehi</span>
+                                    <span class="job-type"><i class="fas fa-briefcase"></i> Full Time</span>
+                                    <span class="job-department"><i class="fas fa-code-branch"></i> Security</span>
+                                </div>
+                            </div>
+                            <p class="job-summary">Monitor security systems, conduct vulnerability assessments, and implement security measures to protect organizational assets and data.</p>
+                            <div class="job-tags">
+                                <span class="job-tag">Security</span>
+                                <span class="job-tag">Penetration Testing</span>
+                                <span class="job-tag">CISSP</span>
+                                <span class="job-tag">SIEM</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary apply-now-btn" data-job-id="cybersecurity-analyst" data-job-title="Cybersecurity Analyst">Apply Now</button>
+                    </div>
+                    
+                    <div class="job-card">
+                        <div class="job-info">
+                            <div class="job-header">
+                                <h3>Data Scientist</h3>
+                                <div class="job-meta">
+                                    <span class="job-location"><i class="fas fa-map-marker-alt"></i> Head Office, Butwal, Rupandehi</span>
+                                    <span class="job-type"><i class="fas fa-briefcase"></i> Full Time</span>
+                                    <span class="job-department"><i class="fas fa-code-branch"></i> Data Science</span>
+                                </div>
+                            </div>
+                            <p class="job-summary">Develop machine learning models, analyze large datasets, and provide data-driven insights to drive business decisions and product improvements.</p>
+                            <div class="job-tags">
+                                <span class="job-tag">Python</span>
+                                <span class="job-tag">Machine Learning</span>
+                                <span class="job-tag">TensorFlow</span>
+                                <span class="job-tag">Data Analytics</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary apply-now-btn" data-job-id="data-scientist" data-job-title="Data Scientist">Apply Now</button>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        
+        <!-- Application Form View (Hidden by Default) -->
+        <div class="application-view" id="applicationView" style="display: none;">
+            <div class="application-header">
+                <button class="back-to-jobs-btn btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Jobs
+                </button>
+                <h2 class="application-title">Apply for: <span id="selectedJobTitle"></span></h2>
+            </div>
+            
+            <div class="application-container">
+                <!-- Left Column: Job Details -->
+                <div class="job-details-column">
+                    <div class="job-details-card">
+                        <div class="job-detail-section">
+                            <h4><i class="fas fa-info-circle"></i> Summary</h4>
+                            <p id="jobSummary">The DevOps Engineer is responsible for designing automated CI/CD systems, managing Kubernetes-based deployments, implementing observability stacks, enforcing security compliance, and ensuring reliable and scalable DevOps infrastructure.</p>
+                        </div>
+                        
+                        <div class="job-detail-section">
+                            <h4><i class="fas fa-graduation-cap"></i> Qualification</h4>
+                            <ul id="jobQualification">
+                                <li>Bachelor's degree in Computer Science, Engineering, or related field</li>
+                                <li>3+ years of experience in DevOps/SRE roles</li>
+                                <li>Certifications in AWS, Azure, or Kubernetes (preferred)</li>
+                                <li>Strong understanding of Linux/Unix administration</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="job-detail-section">
+                            <h4><i class="fas fa-tasks"></i> Key Responsibilities</h4>
+                            <ul id="jobResponsibilities">
+                                <li>Design and implement CI/CD pipelines using Jenkins, GitLab CI, or similar</li>
+                                <li>Manage and optimize Kubernetes clusters and container orchestration</li>
+                                <li>Implement monitoring, logging, and observability solutions</li>
+                                <li>Automate infrastructure provisioning using Terraform or CloudFormation</li>
+                                <li>Ensure security compliance and implement best practices</li>
+                                <li>Collaborate with development teams to optimize application performance</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="job-detail-section">
+                            <h4><i class="fas fa-requirements"></i> Requirements</h4>
+                            <ul id="jobRequirements">
+                                <li>Proficiency with container technologies (Docker, Kubernetes)</li>
+                                <li>Experience with cloud platforms (AWS, Azure, GCP)</li>
+                                <li>Strong scripting skills (Bash, Python, PowerShell)</li>
+                                <li>Knowledge of Infrastructure as Code (Terraform, Ansible)</li>
+                                <li>Experience with monitoring tools (Prometheus, Grafana, ELK stack)</li>
+                                <li>Understanding of networking and security principles</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="job-detail-section">
+                            <h4><i class="fas fa-gift"></i> Additional Benefits and Perks</h4>
+                            <ul id="jobBenefits">
+                                <li>Flexible working hours and remote work options</li>
+                                <li>Annual training and certification budget</li>
+                                <li>Latest hardware and software tools</li>
+                                <li>Opportunity to work with cutting-edge technologies</li>
+                                <li>Career growth and mentorship programs</li>
+                                <li>Participation in tech conferences and events</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column: Application Form -->
+                <div class="application-form-column">
+                    <div class="application-form-card">
+                        <h3 class="form-title">Apply Now</h3>
+                        
+                        <form id="jobApplicationForm" class="job-application-form">
+                            <input type="hidden" id="jobId" name="jobId" value="">
+                            <input type="hidden" id="jobTitleField" name="jobTitle" value="">
+                            
+                            <div id="applicationFormMessage" class="form-message"></div>
+                            
+                            <div class="form-row">
+                                <div class="form-group half">
+                                    <label for="firstName">First Name *</label>
+                                    <input type="text" id="firstName" name="firstName" class="form-control" placeholder="First Name" required>
+                                </div>
+                                
+                                <div class="form-group half">
+                                    <label for="lastName">Last Name *</label>
+                                    <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Last Name" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="applicantEmail">Email *</label>
+                                <input type="email" id="applicantEmail" name="email" class="form-control" placeholder="Email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="applicantPhone">Contact Number *</label>
+                                <input type="tel" id="applicantPhone" name="phone" class="form-control" placeholder="Contact Number" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="cvFile">CV *</label>
+                                <div class="file-upload-container">
+                                    <div class="file-upload-area" id="cvUploadArea">
+                                        <div class="upload-icon">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                        </div>
+                                        <p class="upload-text">Click to upload or drag and drop</p>
+                                        <p class="upload-note">Please upload pdf or doc file</p>
+                                        <input type="file" id="cvFile" name="cv" class="file-input" accept=".pdf,.doc,.docx" required>
+                                    </div>
+                                    <div class="file-name-display" id="cvFileName">No file chosen</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="coverLetterFile">Cover Letter</label>
+                                <div class="file-upload-container">
+                                    <div class="file-upload-area" id="coverLetterUploadArea">
+                                        <div class="upload-icon">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                        </div>
+                                        <p class="upload-text">Click to upload or drag and drop</p>
+                                        <p class="upload-note">Please upload pdf or doc file</p>
+                                        <input type="file" id="coverLetterFile" name="coverLetter" class="file-input" accept=".pdf,.doc,.docx">
+                                    </div>
+                                    <div class="file-name-display" id="coverLetterFileName">No file chosen</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="additionalInfo">Additional Information (Optional)</label>
+                                <textarea id="additionalInfo" name="additionalInfo" class="form-control" rows="4" placeholder="Any additional information you'd like to share..."></textarea>
+                            </div>
+                            
+                            <div class="form-submit">
+                                <button type="submit" class="btn btn-primary submit-btn">
+                                    <i class="fas fa-paper-plane"></i> Submit Application
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="benefits-section">
+            <h3>Benefits & Perks of Working at SPH</h3>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="benefit-text">
+                        <h4>Competitive Salaries</h4>
+                        <p>Industry-competitive compensation packages</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <div class="benefit-text">
+                        <h4>Provident Fund</h4>
+                        <p>Retirement savings with company contribution</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="benefit-text">
+                        <h4>TADA Allowance</h4>
+                        <p>Travel and daily allowance for work-related travel</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <div class="benefit-text">
+                        <h4>Accidental & Medical</h4>
+                        <p>Comprehensive health and accident insurance</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-umbrella-beach"></i>
+                    </div>
+                    <div class="benefit-text">
+                        <h4>Leave as per Labour Law</h4>
+                        <p>Generous leave policy following legal requirements</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div class="benefit-text">
+                        <h4>Annual Bonus</h4>
+                        <p>Performance-based annual bonuses</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-holly-berry"></i>
+                    </div>
+                    <div class="benefit-text">
+                        <h4>Festival Bonus</h4>
+                        <p>Additional bonuses during major festivals</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <div class="benefit-text">
+                        <h4>Vacation Allowances</h4>
+                        <p>Support for your well-deserved vacations</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <div class="benefit-text">
+                        <h4>Internet Benefit</h4>
+                        <p>Home internet allowance for remote work</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <div class="benefit-text">
+                        <h4>Preventive Health Care</h4>
+                        <p>Regular health check-ups and wellness programs</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-gas-pump"></i>
+                    </div>
+                    <div class="benefit-text">
+                        <h4>Fuel Allowance</h4>
+                        <p>Fuel reimbursement for work-related travel</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div class="benefit-text">
+                        <h4>Vehicle Maintenance</h4>
+                        <p>Allowance for vehicle maintenance and repairs</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="benefit-text">
+                        <h4>Performance Reward</h4>
+                        <p>Recognition and rewards for outstanding performance</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="benefit-text">
+                        <h4>5 Working Days</h4>
+                        <p>Monday to Friday work schedule</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <div class="benefit-text">
+                        <h4>Recreational Programs</h4>
+                        <p>Team building activities and recreational events</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="benefit-text">
+                        <h4>Learning & Development</h4>
+                        <p>Continuous learning opportunities and training</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-money-check-alt"></i>
+                    </div>
+                    <div class="benefit-text">
+                        <h4>Leave Encashment</h4>
+                        <p>Option to encash unused leave days</p>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <div class="hiring-process">
+            <h3>Our Hiring Process</h3>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h4>Application Receive</h4>
+                    <p>We review your application and qualifications</p>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h4>Shortlisting</h4>
+                    <p>Candidate screening based on job requirements</p>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h4>Interview Process</h4>
+                    <p>Initial interview with HR and hiring team</p>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <h4>Assessment or Task</h4>
+                    <p>Technical assessment or task evaluation</p>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">5</div>
+                    <h4>Final Interview</h4>
+                    <p>Meeting with department head or leadership</p>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">6</div>
+                    <h4>Offer & Onboarding</h4>
+                    <p>Job offer and comprehensive onboarding</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
