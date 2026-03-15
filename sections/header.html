@@ -2,21 +2,26 @@
     <div class="container">
         <div class="header-container">
             <div class="logo">
-                <div class="logo-circle">MITS</div>
-                <div class="logo-text">
-                    <h2>Malika IT</h2>
-                    <p>trade and supplier</p>
-                </div>
+                <!-- Make the entire logo clickable - goes to home page -->
+                <a href="/" class="logo-link">
+                    <img src="images/mits.jpg" alt="Malika IT Logo" class="logo-img-large">
+                    <div class="logo-text" style="line-height: 1.1;">
+                        <h3 style="margin: 0; padding: 0; line-height: 1.1;">Malika IT</h3>
+                        <p style="margin: 0; padding: 0; line-height: 1; margin-top: -2px;">Trade And Supplier</p>
+                    </div>
+                </a>
             </div>
             
-            <nav class="nav-menu">
-                <a href="#home" class="nav-link active">Home</a>
-                <a href="#services" class="nav-link">Services</a>
-                <a href="#products" class="nav-link">Products</a>
-                <a href="#about" class="nav-link">About Us</a>
-                <a href="#career" class="nav-link">Career</a>
-                <!-- <a href="#team" class="nav-link">Our Team</a> -->
-                <a href="#contact" class="nav-link">Contact Us</a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="/" class="nav-link" data-page="home">Home</a></li>
+                    <li><a href="/services" class="nav-link" data-page="services">Services</a></li>
+                    <li><a href="/products" class="nav-link" data-page="products">Products</a></li>
+                    <li><a href="/about" class="nav-link" data-page="about">About Us</a></li>
+                    <li><a href="/career" class="nav-link" data-page="career">Career</a></li>
+                    <li><a href="/team" class="nav-link" data-page="team">Team</a></li>
+                    <li><a href="/contact" class="nav-link" data-page="contact">Contact Us</a></li>
+                </ul>
             </nav>
             
             <div class="mobile-toggle">

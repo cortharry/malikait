@@ -1,20 +1,14 @@
 /**
  * SPH Corporate Website - Main JavaScript File
- * Handles dynamic behavior, form validation, and animations
+ * Complete version with all functions
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Load section content dynamically
+    // Load header first
     loadSection('header-container', 'sections/header.html');
-    loadSection('services-container', 'sections/services.html');
-    loadSection('products-container', 'sections/products.html');
-    loadSection('about-container', 'sections/about.html');
-    loadSection('career-container', 'sections/career.html');
-    loadSection('team-container', 'sections/team.html');
-    loadSection('contact-container', 'sections/contact.html');
     
-    // Initialize components after sections are loaded
-    setTimeout(initializeComponents, 100);
+    // Check current URL and load appropriate content
+    checkURLAndLoadContent();
     
     // Set current year in footer
     const yearElement = document.getElementById('currentYear');
@@ -22,21 +16,111 @@ document.addEventListener('DOMContentLoaded', function() {
         yearElement.textContent = new Date().getFullYear();
     }
     
-    // Initialize counters for About section
-    initCounters();
-    
-    // Initialize forms
-    initForms();
-    
     // Initialize back to top button
     initBackToTop();
     
-    // Initialize smooth scrolling for anchor links
-    initSmoothScrolling();
-    
-    // Initialize career section functionality using event delegation
-    initCareerEventDelegation();
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', checkURLAndLoadContent);
 });
+
+/**
+ * Check the current URL and load content accordingly
+ */
+function checkURLAndLoadContent() {
+    // Get the current path (remove leading slash)
+    let path = window.location.pathname.substring(1);
+    
+    // If path is empty or home, load all sections
+    if (!path || path === '' || path === 'home') {
+        loadAllSections();
+    } else {
+        // Check if it's a valid section
+        const validSections = ['services', 'products', 'about', 'career', 'team', 'contact'];
+        
+        if (validSections.includes(path)) {
+            // Hide all sections and show only the requested one
+            hideAllSections();
+            loadSection(path + '-container', 'sections/' + path + '.html');
+        } else {
+            // If not valid, load home page
+            loadAllSections();
+        }
+    }
+}
+
+/**
+ * Load all sections (home page)
+ */
+function loadAllSections() {
+    // First load home section (hero)
+    loadSection('home-container', 'sections/home.html');
+    
+    // Then load all other sections
+    const sections = ['services', 'products', 'about', 'career', 'team', 'contact'];
+    
+    sections.forEach(section => {
+        loadSection(section + '-container', 'sections/' + section + '.html');
+    });
+    
+    // Update URL if needed
+    if (window.location.pathname !== '/') {
+        history.pushState({}, '', '/');
+    }
+    
+    // Initialize all components after a short delay
+    setTimeout(() => {
+        initializeComponents();
+        initCounters();
+        initForms();
+        initCareerEventDelegation();
+        initProductSlider();
+        initTeamHoverEffects();
+    }, 300);
+}
+
+/**
+ * Hide all section containers
+ */
+function hideAllSections() {
+    const containers = [
+        'home-container',
+        'services-container',
+        'products-container',
+        'about-container',
+        'career-container',
+        'team-container',
+        'contact-container'
+    ];
+    
+    containers.forEach(containerId => {
+        const element = document.getElementById(containerId);
+        if (element) {
+            element.style.display = 'none';
+        }
+    });
+}
+
+/**
+ * Show all section containers
+ */
+function showAllSections() {
+    const containers = [
+        'home-container',
+        'services-container',
+        'products-container',
+        'about-container',
+        'career-container',
+        'team-container',
+        'contact-container'
+    ];
+    
+    containers.forEach(containerId => {
+        const element = document.getElementById(containerId);
+        if (element) {
+            element.style.display = 'block';
+        }
+    });
+}
 
 /**
  * Load section content from external HTML files
@@ -45,12 +129,53 @@ async function loadSection(containerId, filePath) {
     try {
         const response = await fetch(filePath);
         const html = await response.text();
-        document.getElementById(containerId).innerHTML = html;
+        
+        const container = document.getElementById(containerId);
+        if (container) {
+            container.innerHTML = html;
+            container.style.display = 'block';
+        }
     } catch (error) {
-        console.error(`Error loading ${filePath}:`, error);
-        document.getElementById(containerId).innerHTML = `<p>Error loading content. Please try again later.</p>`;
+        console.error('Error loading ' + filePath + ':', error);
     }
 }
+
+/**
+ * Handle navigation clicks
+ */
+document.addEventListener('click', function(e) {
+    // Find if the clicked element is a navigation link
+    const navLink = e.target.closest('.nav-link');
+    
+    if (navLink) {
+        e.preventDefault();
+        
+        const page = navLink.getAttribute('data-page');
+        
+        if (page === 'home') {
+            // Show all sections for home
+            showAllSections();
+            history.pushState({}, '', '/');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            // Hide all sections and load the selected one
+            hideAllSections();
+            loadSection(page + '-container', 'sections/' + page + '.html');
+            history.pushState({}, '', '/' + page);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Close mobile menu if open
+        const navMenu = document.querySelector('.nav-menu');
+        const mobileToggle = document.querySelector('.mobile-toggle');
+        if (navMenu && navMenu.classList.contains('active')) {
+            navMenu.classList.remove('active');
+            if (mobileToggle) {
+                mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        }
+    }
+});
 
 /**
  * Initialize all components after sections are loaded
@@ -60,10 +185,14 @@ function initializeComponents() {
     const mobileToggle = document.querySelector('.mobile-toggle');
     const navMenu = document.querySelector('.nav-menu');
     
-    if (mobileToggle) {
-        mobileToggle.addEventListener('click', () => {
+    if (mobileToggle && navMenu) {
+        // Remove any existing listeners to avoid duplicates
+        const newMobileToggle = mobileToggle.cloneNode(true);
+        mobileToggle.parentNode.replaceChild(newMobileToggle, mobileToggle);
+        
+        newMobileToggle.addEventListener('click', function() {
             navMenu.classList.toggle('active');
-            mobileToggle.innerHTML = navMenu.classList.contains('active') 
+            newMobileToggle.innerHTML = navMenu.classList.contains('active') 
                 ? '<i class="fas fa-times"></i>' 
                 : '<i class="fas fa-bars"></i>';
         });
@@ -72,25 +201,28 @@ function initializeComponents() {
     // Close mobile menu when clicking on a link
     const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            navMenu.classList.remove('active');
-            if (mobileToggle) {
-                mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+        link.addEventListener('click', function() {
+            const navMenu = document.querySelector('.nav-menu');
+            const mobileToggle = document.querySelector('.mobile-toggle');
+            if (navMenu && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                if (mobileToggle) {
+                    mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                }
             }
         });
     });
     
     // Sticky header on scroll
-    window.addEventListener('scroll', () => {
+    window.addEventListener('scroll', function() {
         const header = document.querySelector('.header');
-        if (window.scrollY > 100) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
+        if (header) {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
         }
-        
-        // Update active nav link based on scroll position
-        updateActiveNavLink();
     });
     
     // Tab functionality for About section
@@ -99,27 +231,22 @@ function initializeComponents() {
     
     if (tabButtons.length > 0) {
         tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const tabId = button.getAttribute('data-tab');
+            button.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
                 
                 // Remove active class from all buttons and panes
                 tabButtons.forEach(btn => btn.classList.remove('active'));
                 tabPanes.forEach(pane => pane.classList.remove('active'));
                 
                 // Add active class to clicked button and corresponding pane
-                button.classList.add('active');
-                if (document.getElementById(tabId)) {
-                    document.getElementById(tabId).classList.add('active');
+                this.classList.add('active');
+                const tabPane = document.getElementById(tabId);
+                if (tabPane) {
+                    tabPane.classList.add('active');
                 }
             });
         });
     }
-    
-    // Product slider functionality
-    initProductSlider();
-    
-    // Team member hover effects
-    initTeamHoverEffects();
 }
 
 /**
@@ -127,29 +254,24 @@ function initializeComponents() {
  */
 function initCounters() {
     const counters = document.querySelectorAll('.counter');
-    const speed = 200; // The lower the slower
+    const speed = 200;
     
     counters.forEach(counter => {
-        const updateCount = () => {
-            const target = +counter.getAttribute('data-target');
-            const count = +counter.innerText;
+        const updateCount = function() {
+            const target = parseInt(counter.getAttribute('data-target'));
+            const count = parseInt(counter.innerText);
+            const inc = Math.ceil(target / speed);
             
-            // Lower inc to slow and higher to speed
-            const inc = target / speed;
-            
-            // Check if target is reached
             if (count < target) {
-                // Add inc to count and output in counter
-                counter.innerText = Math.ceil(count + inc);
-                // Call function every ms
-                setTimeout(updateCount, 1);
+                counter.innerText = count + inc;
+                setTimeout(updateCount, 10);
             } else {
                 counter.innerText = target;
             }
         };
         
         // Start counting when element is in viewport
-        const observer = new IntersectionObserver((entries) => {
+        const observer = new IntersectionObserver(function(entries) {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     updateCount();
@@ -172,56 +294,64 @@ function initForms() {
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Simple validation
+            // Get form elements
             const name = document.getElementById('name');
             const email = document.getElementById('email');
             const message = document.getElementById('message');
             const formMessage = document.getElementById('formMessage');
             
             let valid = true;
+            let errorMessage = '';
             
             // Reset previous error states
-            [name, email, message].forEach(field => {
-                if (field) field.style.borderColor = '';
-            });
+            if (name) name.style.borderColor = '';
+            if (email) email.style.borderColor = '';
+            if (message) message.style.borderColor = '';
             
             // Validate name
-            if (name.value.trim() === '') {
-                name.style.borderColor = '#dc3545';
+            if (!name || name.value.trim() === '') {
+                if (name) name.style.borderColor = '#dc3545';
+                errorMessage += 'Name is required. ';
                 valid = false;
             }
             
             // Validate email
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email.value.trim())) {
-                email.style.borderColor = '#dc3545';
+            if (!email || !emailRegex.test(email.value.trim())) {
+                if (email) email.style.borderColor = '#dc3545';
+                errorMessage += 'Valid email is required. ';
                 valid = false;
             }
             
             // Validate message
-            if (message.value.trim() === '') {
-                message.style.borderColor = '#dc3545';
+            if (!message || message.value.trim() === '') {
+                if (message) message.style.borderColor = '#dc3545';
+                errorMessage += 'Message is required. ';
                 valid = false;
             }
             
             if (valid) {
-                // In a real application, you would send data to a server here
-                // For demo purposes, we'll show a success message
-                formMessage.textContent = 'Thank you for your message! We will get back to you soon.';
-                formMessage.className = 'form-message success';
-                formMessage.style.display = 'block';
+                // Show success message
+                if (formMessage) {
+                    formMessage.textContent = 'Thank you for your message! We will get back to you soon.';
+                    formMessage.className = 'form-message success';
+                    formMessage.style.display = 'block';
+                }
                 
                 // Reset form
                 contactForm.reset();
                 
                 // Hide message after 5 seconds
-                setTimeout(() => {
-                    formMessage.style.display = 'none';
+                setTimeout(function() {
+                    if (formMessage) formMessage.style.display = 'none';
                 }, 5000);
             } else {
-                formMessage.textContent = 'Please fill in all required fields correctly.';
-                formMessage.className = 'form-message error';
-                formMessage.style.display = 'block';
+                // Show error message
+                if (formMessage) {
+                    formMessage.textContent = errorMessage || 'Please fill in all required fields correctly.';
+                    formMessage.className = 'form-message error';
+                    formMessage.style.display = 'block';
+                }
             }
         });
     }
@@ -234,7 +364,7 @@ function initBackToTop() {
     const backToTopButton = document.getElementById('backToTop');
     
     if (backToTopButton) {
-        window.addEventListener('scroll', () => {
+        window.addEventListener('scroll', function() {
             if (window.scrollY > 300) {
                 backToTopButton.classList.add('visible');
             } else {
@@ -242,33 +372,10 @@ function initBackToTop() {
             }
         });
         
-        backToTopButton.addEventListener('click', () => {
+        backToTopButton.addEventListener('click', function() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
-}
-
-/**
- * Initialize smooth scrolling for anchor links
- */
-function initSmoothScrolling() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            
-            // Skip if it's just "#" or empty
-            if (href === '#' || href === '') return;
-            
-            const targetElement = document.querySelector(href);
-            if (targetElement) {
-                e.preventDefault();
-                targetElement.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
 }
 
 /**
@@ -278,10 +385,13 @@ function initProductSlider() {
     const productGrid = document.querySelector('.products-grid');
     if (!productGrid) return;
     
-    // Create navigation buttons for slider
+    // Check if slider nav already exists
+    let sliderNav = document.querySelector('.slider-nav');
+    
+    // Create navigation buttons for slider if they don't exist
     const productsSection = document.querySelector('.products');
-    if (productsSection) {
-        const sliderNav = document.createElement('div');
+    if (productsSection && !sliderNav) {
+        sliderNav = document.createElement('div');
         sliderNav.className = 'slider-nav';
         sliderNav.innerHTML = `
             <button class="slider-prev"><i class="fas fa-chevron-left"></i></button>
@@ -294,17 +404,16 @@ function initProductSlider() {
         const prevBtn = sliderNav.querySelector('.slider-prev');
         const nextBtn = sliderNav.querySelector('.slider-next');
         
-        let scrollAmount = 0;
         const scrollStep = 350;
         
-        prevBtn.addEventListener('click', () => {
+        prevBtn.addEventListener('click', function() {
             productGrid.scrollBy({
                 left: -scrollStep,
                 behavior: 'smooth'
             });
         });
         
-        nextBtn.addEventListener('click', () => {
+        nextBtn.addEventListener('click', function() {
             productGrid.scrollBy({
                 left: scrollStep,
                 behavior: 'smooth'
@@ -312,7 +421,7 @@ function initProductSlider() {
         });
         
         // Hide/show buttons based on scroll position
-        productGrid.addEventListener('scroll', () => {
+        productGrid.addEventListener('scroll', function() {
             const maxScroll = productGrid.scrollWidth - productGrid.clientWidth;
             
             if (productGrid.scrollLeft <= 10) {
@@ -345,39 +454,13 @@ function initTeamHoverEffects() {
     const teamCards = document.querySelectorAll('.team-card');
     
     teamCards.forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateY(-10px)';
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px)';
         });
         
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'translateY(0)';
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
         });
-    });
-}
-
-/**
- * Update active navigation link based on scroll position
- */
-function updateActiveNavLink() {
-    const sections = document.querySelectorAll('section, .section');
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    let current = '';
-    
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        
-        if (scrollY >= sectionTop - 200) {
-            current = section.getAttribute('id');
-        }
-    });
-    
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
-        }
     });
 }
 
@@ -388,19 +471,18 @@ function formatNumber(num) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-/* ==================== CAREER SECTION (Event Delegation) ==================== */
+/* ==================== CAREER SECTION (Complete) ==================== */
 
 /**
- * Initialize event delegation for career section (Apply Now & Back to Jobs)
- * This ensures buttons work even if career.html loads later.
+ * Initialize event delegation for career section
  */
 function initCareerEventDelegation() {
-    // Listen for clicks on the whole document (or a specific container like #career-container)
+    // Listen for clicks on the whole document
     document.addEventListener('click', function(e) {
         // Check if the clicked element or its parent is an Apply Now button
         const applyBtn = e.target.closest('.apply-now-btn');
         if (applyBtn) {
-            e.preventDefault(); // Prevent any default action
+            e.preventDefault();
             const jobId = applyBtn.getAttribute('data-job-id');
             const jobTitle = applyBtn.getAttribute('data-job-title');
             if (jobId && jobTitle) {
@@ -418,10 +500,7 @@ function initCareerEventDelegation() {
         }
     });
     
-    // Also initialize file uploads and form submission (these elements exist only after career is loaded)
-    // We'll set up file upload listeners when the career section is loaded, but we can also use event delegation for form submit.
-    // Better to set up form submission once the form exists, using a mutation observer or simply check after load.
-    // We'll add a small helper to initialize file uploads when career appears.
+    // Initialize file uploads and form submission when career section appears
     waitForElement('#career', function() {
         initCareerFileUploads();
         initCareerFormSubmission();
@@ -429,13 +508,15 @@ function initCareerEventDelegation() {
 }
 
 /**
- * Wait for an element to appear in the DOM (useful for dynamically loaded content)
+ * Wait for an element to appear in the DOM
  */
 function waitForElement(selector, callback) {
     if (document.querySelector(selector)) {
         callback();
     } else {
-        setTimeout(() => waitForElement(selector, callback), 100);
+        setTimeout(function() {
+            waitForElement(selector, callback);
+        }, 100);
     }
 }
 
@@ -464,7 +545,8 @@ function handleApplyClick(jobId, jobTitle) {
     applicationView.style.display = 'block';
     
     // Scroll to top of application view
-    window.scrollTo({ top: applicationView.offsetTop - 100, behavior: 'smooth' });
+    const applicationViewTop = applicationView.offsetTop - 100;
+    window.scrollTo({ top: applicationViewTop, behavior: 'smooth' });
 }
 
 /**
@@ -480,13 +562,17 @@ function handleBackToJobsClick() {
     jobListView.style.display = 'block';
     
     // Scroll to career section
-    document.getElementById('career').scrollIntoView({ behavior: 'smooth' });
+    const careerSection = document.getElementById('career');
+    if (careerSection) {
+        careerSection.scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
 /**
  * Load job details into the application view
  */
 function loadJobDetails(jobId) {
+    // Complete job data
     const jobData = {
         'devops-engineer': {
             title: 'DevOps Engineer',
@@ -639,6 +725,8 @@ function loadJobDetails(jobId) {
  * Helper function to update list items
  */
 function updateList(element, items) {
+    if (!element) return;
+    
     element.innerHTML = '';
     items.forEach(item => {
         const li = document.createElement('li');
@@ -717,7 +805,7 @@ function initCareerFormSubmission() {
     applicationForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Validate form
+        // Get form elements
         const firstName = document.getElementById('firstName');
         const lastName = document.getElementById('lastName');
         const email = document.getElementById('applicantEmail');
@@ -740,41 +828,45 @@ function initCareerFormSubmission() {
         
         // Validate required fields
         if (!firstName || !firstName.value.trim()) {
-            if (firstName) firstName.style.borderColor = 'var(--danger-color)';
+            if (firstName) firstName.style.borderColor = '#dc3545';
             errors.push('First Name is required');
             valid = false;
         }
         
         if (!lastName || !lastName.value.trim()) {
-            if (lastName) lastName.style.borderColor = 'var(--danger-color)';
+            if (lastName) lastName.style.borderColor = '#dc3545';
             errors.push('Last Name is required');
             valid = false;
         }
         
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!email || !emailRegex.test(email.value.trim())) {
-            if (email) email.style.borderColor = 'var(--danger-color)';
+            if (email) email.style.borderColor = '#dc3545';
             errors.push('Valid Email is required');
             valid = false;
         }
         
         if (!phone || !phone.value.trim()) {
-            if (phone) phone.style.borderColor = 'var(--danger-color)';
+            if (phone) phone.style.borderColor = '#dc3545';
             errors.push('Contact Number is required');
             valid = false;
         }
         
         // Validate CV file
         if (!cvFileInput || cvFileInput.files.length === 0) {
-            if (cvUploadArea) cvUploadArea.style.borderColor = 'var(--danger-color)';
+            if (cvUploadArea) cvUploadArea.style.borderColor = '#dc3545';
             errors.push('CV file is required');
             valid = false;
         } else {
             // Check file type
-            const allowedTypes = ['application/pdf', 'application/msword', 
-                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+            const allowedTypes = [
+                'application/pdf', 
+                'application/msword', 
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            ];
+            
             if (!allowedTypes.includes(cvFileInput.files[0].type)) {
-                if (cvUploadArea) cvUploadArea.style.borderColor = 'var(--danger-color)';
+                if (cvUploadArea) cvUploadArea.style.borderColor = '#dc3545';
                 errors.push('CV must be a PDF or Word document');
                 valid = false;
             }
@@ -782,18 +874,21 @@ function initCareerFormSubmission() {
         
         // Validate cover letter if uploaded
         if (coverLetterFileInput && coverLetterFileInput.files.length > 0) {
-            const allowedTypes = ['application/pdf', 'application/msword', 
-                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+            const allowedTypes = [
+                'application/pdf', 
+                'application/msword', 
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            ];
+            
             if (!allowedTypes.includes(coverLetterFileInput.files[0].type)) {
-                if (coverLetterUploadArea) coverLetterUploadArea.style.borderColor = 'var(--danger-color)';
+                if (coverLetterUploadArea) coverLetterUploadArea.style.borderColor = '#dc3545';
                 errors.push('Cover Letter must be a PDF or Word document');
                 valid = false;
             }
         }
         
         if (valid) {
-            // In a real application, you would submit to a server here
-            // For demo purposes, show success message
+            // Show success message
             if (formMessage) {
                 formMessage.textContent = 'Application submitted successfully! We will review your application and contact you soon.';
                 formMessage.className = 'form-message success';
@@ -802,15 +897,18 @@ function initCareerFormSubmission() {
             
             // Reset form
             applicationForm.reset();
+            
             const cvFileName = document.getElementById('cvFileName');
             const coverLetterFileName = document.getElementById('coverLetterFileName');
+            
             if (cvFileName) cvFileName.textContent = 'No file chosen';
             if (coverLetterFileName) coverLetterFileName.textContent = 'No file chosen';
+            
             if (cvUploadArea) cvUploadArea.classList.remove('dragover');
             if (coverLetterUploadArea) coverLetterUploadArea.classList.remove('dragover');
             
             // Hide message after 5 seconds
-            setTimeout(() => {
+            setTimeout(function() {
                 if (formMessage) formMessage.style.display = 'none';
             }, 5000);
             
@@ -820,6 +918,7 @@ function initCareerFormSubmission() {
                 applicationView.scrollTop = 0;
             }
         } else {
+            // Show error message
             if (formMessage) {
                 formMessage.textContent = errors.join('. ') + '. Please correct the errors and try again.';
                 formMessage.className = 'form-message error';
@@ -828,3 +927,25 @@ function initCareerFormSubmission() {
         }
     });
 }
+document.addEventListener('DOMContentLoaded', function() {
+    // Load header first
+    loadSection('header-container', 'sections/header.html');
+    
+    // Load footer
+    loadSection('footer-container', 'sections/footer.html');
+    
+    // Check current URL and load appropriate content
+    checkURLAndLoadContent();
+    
+    // Set current year in footer
+    const yearElement = document.getElementById('currentYear');
+    if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
+    }
+    
+    // Initialize back to top button
+    initBackToTop();
+    
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', checkURLAndLoadContent);
+});
