@@ -1395,31 +1395,31 @@ textarea.form-control {
     display: block;
 }
 
-/* ==================== FOOTER STYLES ==================== */
+/* ==================== FOOTER STYLES - REDUCED HEIGHT ==================== */
 
 .footer {
     background-color: var(--dark-color);
     color: white;
-    padding: 60px 0 20px;
+    padding: 30px 0 10px; /* REDUCED: from 60px to 30px top, 20px to 10px bottom */
     margin-top: 0;
 }
 
 .footer-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    margin-bottom: 40px;
+    gap: 20px; /* REDUCED: from 30px to 20px */
+    margin-bottom: 20px; /* REDUCED: from 40px to 20px */
 }
 
 /* Footer Logo Styles */
 .footer-logo {
-    margin-bottom: 15px;
+    margin-bottom: 8px; /* REDUCED: from 15px to 8px */
 }
 
 .footer-logo-link {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px; /* REDUCED: from 10px to 8px */
     text-decoration: none;
     color: white;
     transition: opacity 0.3s ease;
@@ -1430,8 +1430,8 @@ textarea.form-control {
 }
 
 .footer-logo-img {
-    width: 50px;
-    height: 50px;
+    width: 40px; /* REDUCED: from 50px to 40px */
+    height: 40px; /* REDUCED: from 50px to 40px */
     object-fit: contain;
     border-radius: 6px;
 }
@@ -1439,7 +1439,7 @@ textarea.form-control {
 .footer-logo-link h3 {
     margin: 0;
     padding: 0;
-    font-size: 1.5rem;
+    font-size: 1.3rem; /* REDUCED: from 1.5rem to 1.3rem */
     color: white;
     line-height: 1.2;
 }
@@ -1447,22 +1447,22 @@ textarea.form-control {
 /* Footer Description */
 .footer-description {
     color: #aaa;
-    margin: 10px 0 20px;
-    line-height: 1.6;
-    font-size: 0.9rem;
+    margin: 5px 0 10px; /* REDUCED: from 10px 0 20px to 5px 0 10px */
+    line-height: 1.4; /* REDUCED: from 1.6 to 1.4 */
+    font-size: 0.85rem; /* REDUCED: from 0.9rem to 0.85rem */
     max-width: 280px;
 }
 
 /* Social Icons */
 .social-icons {
     display: flex;
-    gap: 12px;
-    margin-top: 5px;
+    gap: 8px; /* REDUCED: from 12px to 8px */
+    margin-top: 0; /* REDUCED: from 5px to 0 */
 }
 
 .social-icons a {
-    width: 36px;
-    height: 36px;
+    width: 30px; /* REDUCED: from 36px to 30px */
+    height: 30px; /* REDUCED: from 36px to 30px */
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 50%;
     display: flex;
@@ -1470,7 +1470,7 @@ textarea.form-control {
     justify-content: center;
     color: white;
     transition: all 0.3s ease;
-    font-size: 1rem;
+    font-size: 0.9rem; /* REDUCED: from 1rem to 0.9rem */
 }
 
 .social-icons a:hover {
@@ -1481,11 +1481,11 @@ textarea.form-control {
 /* Footer Column Headers */
 .footer-col h4 {
     color: white;
-    margin: 0 0 20px 0;
+    margin: 0 0 12px 0; /* REDUCED: from 20px to 12px */
     padding: 0;
-    font-size: 1.2rem;
+    font-size: 1.1rem; /* REDUCED: from 1.2rem to 1.1rem */
     position: relative;
-    padding-bottom: 8px;
+    padding-bottom: 5px; /* REDUCED: from 8px to 5px */
 }
 
 .footer-col h4::after {
@@ -1493,11 +1493,57 @@ textarea.form-control {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 35px;
+    width: 15px;
     height: 2px;
     background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-    border-radius: 2
+    border-radius: 2px;
+}
+
+/* Add these if you have lists in footer */
+.footer-col ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.footer-col ul li {
+    margin-bottom: 5px; /* Add this to control spacing */
+    font-size: 0.85rem;
+    color: #aaa;
+}
+
+.footer-col p {
+    margin: 0 0 5px 0; /* Add this to control spacing */
+    font-size: 0.85rem;
+    color: #aaa;
+}
+
+/* Footer Bottom - Add if you have one */
+.footer-bottom {
+    text-align: center;
+    padding-top: 10px; /* Add this */
+    margin-top: 5px; /* Add this */
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.8rem;
+    color: #888;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .footer {
+        padding: 25px 0 8px; /* Even smaller on mobile */
+    }
     
+    .footer-grid {
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer {
+        padding: 20px 0 5px;
+    }
+}
     
     /*team member */
 
